@@ -80,6 +80,19 @@ int main(int /*argc*/, char* /*/argv[] */ )
     int iResult = AlgorithmInt.Compute(_T("1 + 2 / 3"));
     assert(iResult == 1);
 
+//     CShuntingYard<unsigned long> AlgorithmUnsigned;
+//     unsigned long uiResult = AlgorithmUnsigned.Compute(_T("2 + 1 / 3"));
+//     assert(uiResult == 2);
+
+//     uiResult = AlgorithmUnsigned.Compute(_T("2 - 1 / 3"));
+//     assert(uiResult == 2);
+// 
+//     uiResult = AlgorithmUnsigned.Compute(_T("2 + -9"));
+//     assert(uiResult == 2);
+// 
+//     uiResult = AlgorithmUnsigned.Compute(_T("2 - 9 / 3"));
+//     assert(uiResult == 2);
+
     strEquation = ("456**9");
     dResult = Algorithm.Compute(strEquation);
     assert(dResult == 4104);

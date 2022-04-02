@@ -63,7 +63,8 @@ public:
     template<typename T>
     T ProcessOperator(const T First, const T Second) const
     {
-        static_assert(std::is_arithmetic<T>::value);
+        static_assert(std::is_arithmetic_v<T>, "Operators can only be applied on numerical types");
+        static_assert(std::is_signed_v<T>, "Unsigned types are not supported due to the possibility of underflows");
         switch (m_eOperatorType)
         {
         case EMathOperatorType::MOT_EXPONENT:

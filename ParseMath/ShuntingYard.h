@@ -9,6 +9,7 @@
 template <typename T>
 T ConvertToType(const CString& strValue)
 {
+    static_assert(std::is_signed_v<T>, "Unsigned types are not allowed, due to the easy possibility of negative numbers being used, which is only known runtime");
     // Only specified types are allowed, the rest does not have a valid conversion
 }
 
@@ -28,18 +29,6 @@ template <>
 long long ConvertToType<long long>(const CString& strValue)
 {
     return std::stoll(strValue.GetString());
-}
-
-template <>
-unsigned long ConvertToType<unsigned long>(const CString& strValue)
-{
-    return std::stoul(strValue.GetString());
-}
-
-template <>
-unsigned long long ConvertToType<unsigned long long>(const CString& strValue)
-{
-    return std::stoull(strValue.GetString());
 }
 
 template <>
@@ -155,6 +144,7 @@ public:
                 const T Value = ConvertToType<T>(strToken.GetString());
                 // If this has succeeded, we have a value which we can push to the stack, taking into account the optional previous value modifier (-1)
                 m_NumStack.push_back(m_bNextValueNegative ? -Value : Value);
+ 
                 // Reset the value modifier to +
                 m_bNextValueNegative = false;
                 bPreviousTokenWasValue = true;
@@ -190,7 +180,7 @@ public:
                     // Check previous token, if it is an operator we are not an operator but part of a negative number
                     if (!bPreviousTokenWasValue)
                     {
-                        static_assert(std::is_signed<T>::value);
+                        assert(std::is_signed<T>::value);
                         // Invert the bool, since two negatives will lead to a positive
                         m_bNextValueNegative = !m_bNextValueNegative;
                     }
