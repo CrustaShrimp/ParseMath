@@ -1,12 +1,11 @@
 #pragma once
 #include <assert.h>
 #include <cmath>
-#include <iostream>
+#include <atlstr.h>
 
 class CMathTokenOperator
 {
 public:
-
     CMathTokenOperator(const CString& strToken)
         :m_eOperatorType(EMathOperatorType::MOT_LAST)
         ,m_eOperatorAssociativity(EMathOperatorAssociativity::MOA_LEFT)
@@ -61,36 +60,38 @@ public:
         }
     }
 
-    double ProcessOperator(const double dFirst, const double dSecond) const
+    template<typename T>
+    T ProcessOperator(const T First, const T Second) const
     {
+        static_assert(std::is_arithmetic<T>::value);
         switch (m_eOperatorType)
         {
         case EMathOperatorType::MOT_EXPONENT:
-            return std::pow(dFirst, dSecond);
+            return static_cast<T>(std::pow(static_cast<double>(First), static_cast<double>(Second)));
         case EMathOperatorType::MOT_BRACE_OPEN:
         case EMathOperatorType::MOT_BRACE_CLOSE:
             break;
         case EMathOperatorType::MOT_MULTIPLY:
-            return dFirst * dSecond;
+            return First * Second;
         case EMathOperatorType::MOT_DIVIDE:
-            if (dSecond != 0.0)
+            if (Second != 0.0)
             {
-                return dFirst / dSecond;
+                return First / Second;
             }
             else
             {
                 std::wcout << _T("A divide-by-zero is found, no valid answer is available");
-                return 0.0;
+                return T(0);
             }
         case EMathOperatorType::MOT_ADD:
-            return dFirst + dSecond;
+            return First + Second;
         case EMathOperatorType::MOT_SUBTRACT:
-            return dFirst - dSecond;
+            return First - Second;
         default:
             assert(false);
             break;
         }
-        return 0.0;
+        return T(0);
     }
 
     bool IsOpenBrace() const

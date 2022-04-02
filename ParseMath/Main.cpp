@@ -11,7 +11,7 @@
 
 int main(int /*argc*/, char* /*/argv[] */ )
 {
-    CShuntingYard Algorithm;
+    CShuntingYard<> Algorithm;
     // 0) Simpest equation
     CString strEquation("5 + 8 + 10");
     double dResult = Algorithm.Compute(strEquation);
@@ -75,6 +75,10 @@ int main(int /*argc*/, char* /*/argv[] */ )
     //strEquation = ("456|9");
     //dResult = ShuntingYard(strEquation);
     //// Operator not supported
+
+    CShuntingYard<int> AlgorithmInt;
+    int iResult = AlgorithmInt.Compute(_T("1 + 2 / 3"));
+    assert(iResult == 1);
 
     strEquation = ("456**9");
     dResult = Algorithm.Compute(strEquation);
